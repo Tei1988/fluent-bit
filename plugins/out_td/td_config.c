@@ -27,12 +27,14 @@ struct flb_out_td_config *td_config_init(struct flb_output_instance *o_ins)
     char *api;
     char *db_name;
     char *db_table;
+    char *api_endpoint;
     struct flb_out_td_config *config;
 
     /* Validate TD section keys */
     api = flb_output_get_property("API", o_ins);
     db_name = flb_output_get_property("Database", o_ins);
     db_table = flb_output_get_property("Table", o_ins);
+    api_endpoint = flb_output_get_property("Endpoint", o_ins);
 
     if (!api) {
         flb_error("[out_td] error reading API key value");
@@ -54,9 +56,14 @@ struct flb_out_td_config *td_config_init(struct flb_output_instance *o_ins)
     config->api      = api;
     config->db_name  = db_name;
     config->db_table = db_table;
+    if (!api_endpoint) {
+      config->api_endpoint = "api.treasuredata.com";
+    } else {
+      config->api_endpoint = api_endpoint;
+    }
 
-    flb_debug("TreasureData / database='%s' table='%s'",
-              config->db_name, config->db_table);
+    flb_debug("TreasureData / database='%s' table='%s', endpoint='%s'",
+              config->db_name, config->db_table, config->api_endpoint);
 
     return config;
 }

@@ -29,6 +29,7 @@ struct flb_out_td_config {
     char *api;
     char *db_name;
     char *db_table;
+    char *api_endpoint;
 
     struct flb_upstream *u;
 };
